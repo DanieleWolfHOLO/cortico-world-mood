@@ -1,0 +1,64 @@
+{
+  "name": "cortico-world-mood",
+  "version": "0.4.5",
+  "type": "module",
+  "description": "Coopanion World: an event-driven affective substrate. State is stored and never delivered to the model; only situations are.",
+  "keywords": [
+    "cortico-world",
+    "coopanion",
+    "mood",
+    "affect",
+    "event-driven"
+  ],
+  "license": "MIT",
+  "author": "Daniele贤狼赫萝",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanieleWolfHOLO/cortico-world-mood.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DanieleWolfHOLO/cortico-world-mood/issues"
+  },
+  "homepage": "https://github.com/DanieleWolfHOLO/cortico-world-mood#readme",
+  "main": "./src/index.ts",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "typecheck": "node node_modules/typescript/bin/tsc -p .",
+    "build:webui": "node scripts/build-webui.mjs",
+    "build:describe": "node --import tsx scripts/build-describe.mjs",
+    "check:describe": "node --import tsx scripts/build-describe.mjs --check",
+    "test:manual": "node --experimental-strip-types test/manual.mjs",
+    "test:entry": "node --import tsx test/entry.mjs",
+    "test:integration": "node --import tsx test/integration.mjs",
+    "build": "npm run build:webui && npm run build:describe",
+    "verify": "npm run typecheck && npm run test:manual && npm run test:entry && npm run test:integration && npm run check:describe",
+    "prepack": "npm run build"
+  },
+  "files": [
+    "src",
+    "assets",
+    "dist",
+    "describe.json",
+    "README.md",
+    "CHANGELOG.md",
+    "package.json"
+  ],
+  "cortico": {
+    "kind": "world",
+    "api": 6,
+    "displayName": "小情绪",
+    "icon": "assets/icon.png",
+    "webUiClient": "dist/webui.js",
+    "locales": {
+      "zh": {
+        "displayName": "小情绪"
+      },
+      "en": {
+        "displayName": "Mood"
+      }
+    }
+  },
+  "dependencies": {}
+}

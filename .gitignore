@@ -1,0 +1,13 @@
+# 依赖与本地开发用，不进版本库
+node_modules/
+
+# 改文件前的备份（.backup/mood-v1-xxx 这种）
+.backup/
+
+# 打包产物：由 npm pack 的 prepack 生成，按需重建，不手工维护
+*.tgz
+
+# 编辑器/系统杂项
+.DS_Store
+Thumbs.db
+*.log

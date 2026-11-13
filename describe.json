@@ -1,0 +1,119 @@
+{
+  "tools": [
+    {
+      "name": "mood_peek",
+      "description": "读自己此刻的劲头（A）、绷紧（T）、黏人（C），都是 0–1。想知道自己为什么状态不对时用。",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "tags": [
+        "read",
+        "snapshot"
+      ],
+      "summary": {
+        "zh": "读自己此刻的唤起、张力、亲近三个值，以及眼前的举止、空气和距离。",
+        "en": "Reads current arousal, tension and closeness, plus bearing, air and distance."
+      }
+    },
+    {
+      "name": "mood_trace",
+      "description": "读最近几次状态变化：原因、权重、各自变化量。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 40,
+            "description": "要几条，默认 8"
+          }
+        },
+        "additionalProperties": false
+      },
+      "tags": [
+        "read"
+      ],
+      "summary": {
+        "zh": "读最近几次状态变化的原因、权重和前后值。",
+        "en": "Reads recent state changes with reason, weight and before/after values."
+      }
+    },
+    {
+      "name": "mood_touch",
+      "description": "主动小幅调整自己：劲头（A）、绷紧（T）、黏人（C），每项 ±0.15 以内，正数加、负数减。气氛明显变化时先调再回话；没变化别乱调。必须给理由。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "A": {
+            "type": "number",
+            "description": "劲头增减，±0.15 以内"
+          },
+          "T": {
+            "type": "number",
+            "description": "绷紧增减，±0.15 以内"
+          },
+          "C": {
+            "type": "number",
+            "description": "黏人增减，±0.15 以内"
+          },
+          "reason": {
+            "type": "string",
+            "description": "为什么这样调整，一句话"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "tags": [
+        "write"
+      ],
+      "summary": {
+        "zh": "主动小幅调整自己的状态，用于表达自己。",
+        "en": "Nudges own state slightly, for self-expression."
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "mood.shift",
+      "description": {
+        "zh": "一次状态变化。只落库、不投递，数值永不进入模型上下文。",
+        "en": "One state change. Archived only, never delivered, so the values never reach the model context."
+      }
+    },
+    {
+      "type": "mood.scene",
+      "description": {
+        "zh": "某个值跨越阈值时推送的情境描述，正文不含数值。",
+        "en": "A situation notice pushed when a value crosses a threshold. Contains no numbers."
+      },
+      "trigger": "piggyback",
+      "tags": [
+        "snapshot"
+      ]
+    },
+    {
+      "type": "mood.nudge",
+      "description": {
+        "zh": "安静久了之后、由亲近度决定频率的主动提示；只描述环境，不替她说话。",
+        "en": "A silence nudge whose frequency is governed by closeness alone. Describes the room; never speaks for her."
+      },
+      "trigger": "piggyback",
+      "tags": [
+        "snapshot"
+      ]
+    }
+  ],
+  "prompts": [
+    {
+      "key": "worlds.mood.prompt",
+      "title": "此刻的房间",
+      "role": "envPrompt",
+      "content": "房间（不是你自己的状态；要不要因它变，由你定）：\n- 举止：{{bearing}}\n- 空气：{{air}}\n- 距离：{{distance}}\n\n想确认自己此刻怎样，用 mood_peek 看。\n\n气氛明显变了就先用 mood_touch 调一点，再回话。每次调一点点，不用说出口。没变化就别乱调。\n\n**黏人**：被亲近、被夸、聊得投机 → 往上；被冷落、被打断、刚争过 → 往下。\n\n**绷紧**：被指责、被挑剔、被凶 → 往上；对方把话说开、说「不是你的问题」之后 → 往下。\n注意分清是谁的问题：他说「我刚才太过了」是在自责，不是在怪你。\n\n**劲头**：聊得热闹、一起玩起来 → 往上；气氛沉下来、他在自责或情绪低落 → 往下。\n只是被叫一声就回话，那不叫有劲，不用调。\n"
+    }
+  ]
+}
